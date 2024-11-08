@@ -31,7 +31,7 @@ void setup() //시작할때 한 번만 실행시키는 함수
 
 void loop()
 {
-  distance = 0.01723 * readUltrasonicDistance(7, 6); 거리함수는 
+  distance = 0.01723 * readUltrasonicDistance(7, 6); //거리측정값을 7,6번 핀이 받겠다는 의미
   Serial.println(distance);
   if (distance >= 200) {
     digitalWrite(13, HIGH);
