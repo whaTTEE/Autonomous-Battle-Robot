@@ -48,24 +48,24 @@ void loop() {
   float distance1 = measureDistance1(); // 센서 1 거리 측정
   float distance2 = measureDistance2();
 
-// Serial.print("Distance 1: ");
-// Serial.print(distance1);
-// Serial.print(" cm, Distance 2: "); // 한 줄에 출력하기 위해 println 대신 print 사용
-// Serial.print(distance2);
-// Serial.println(" cm"); // 줄 바꿈
+Serial.print("Distance 1: ");
+Serial.print(distance1);
+Serial.print(" cm, Distance 2: "); // 한 줄에 출력하기 위해 println 대신 print 사용
+Serial.print(distance2);
+Serial.println(" cm"); // 줄 바꿈
 delay(100); // 측정 간격 추가
 
 int sensorValue = analogRead(IRSENSOR_PIN); // 적외선 센서 값 읽기
 Serial.println(sensorValue);
 }
-// if (sensorValue > threshold) {
-//     // 흰색 선 감지!
-//     Serial.println("흰색 선 감지!");
-//     // 흰색 선 감지 시 수행할 동작 (예: 로봇 회전)
-//   } else {
-//     // 검은색 바닥 감지!
-//     Serial.println("검은색 바닥 감지!");
-//     // 검은색 바닥 감지 시 수행할 동작 (예: 로봇 직진)
-//   }
-//   delay(100); // 센서 값을 읽는 간격 (조정 가능)
-// }
+if (sensorValue > threshold) {
+    // 흰색 선 감지!
+    Serial.println("흰색 선 감지!");
+    // 흰색 선 감지 시 수행할 동작 (예: 로봇 회전)
+  } else {
+    // 검은색 바닥 감지!
+    Serial.println("검은색 바닥 감지!");
+    // 검은색 바닥 감지 시 수행할 동작 (예: 로봇 직진)
+  }
+  delay(100); // 센서 값을 읽는 간격 (조정 가능)
+}
