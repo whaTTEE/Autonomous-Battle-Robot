@@ -1,8 +1,8 @@
 // 모터 제어 핀 정의
 const int D0 = 9; // PWM pin for Motor 1
-const int D1 = 6; // PWM pin for Motor 1
-const int D2 = 5; // PWM pin for Motor 2
-const int D3 = 3; // PWM pin for Motor 2
+const int D1 = 8; // PWM pin for Motor 1
+const int D2 = 6; // PWM pin for Motor 2
+const int D3 = 7; // PWM pin for Motor 2
 
 // 적외선 핀 정의
 const int IRSENSOR_PIN = A0; 
