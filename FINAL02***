@@ -1,0 +1,127 @@
+const int TRIG_PIN1 = 2;  // 초음파 센서 트리거 핀 1
+const int ECHO_PIN1 = 13;  // 초음파 센서 에코 핀 1
+const int TRIG_PIN2 = A0;  // 초음파 센서 트리거 핀 2
+const int ECHO_PIN2 = A1;  // 초음파 센서 에코 핀 2
+// ZK-5AD 모터 드라이버 핀 설정
+const int PWM1 = 9;  // ZK-5AD 모터 1 속도 제어 (PWM 핀)
+const int DIR1 = 8;  // ZK-5AD 모터 1 방향 제어
+const int PWM2 = 6;  // ZK-5AD 모터 2 속도 제어 (PWM 핀)
+const int DIR2 = 7;  // ZK-5AD 모터 2 방향 제어
+
+// L298N 모터 드라이버 핀 설정
+const int enA = 5;   // L298N 모터 3 속도 제어 (PWM 핀)
+const int in1 = 4;   // L298N 모터 3 방향 제어 핀 1
+const int in2 = 3;   // L298N 모터 3 방향 제어 핀 2
+const int enB = 10;  // L298N 모터 4 속도 제어 (PWM 핀)
+const int in3 = 11;  // L298N 모터 4 방향 제어 핀 1
+const int in4 = 12;  // L298N 모터 4 방향 제어 핀 2
+
+
+float measureDistance1() {
+  digitalWrite(TRIG_PIN1, LOW); 
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN1, LOW);
+
+  long duration = pulseIn(ECHO_PIN1, HIGH);
+
+  float distance1 = duration * 0.033909 / 2;
+
+  return distance1; 
+}
+
+float measureDistance2() {
+  digitalWrite(TRIG_PIN2, LOW); 
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN2, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN2, LOW);
+
+  long duration = pulseIn(ECHO_PIN2, HIGH);
+
+  float distance2 = duration * 0.033909 / 2;
+
+  return distance2; 
+}
+
+void setup() {
+  Serial.begin(9600);          // 시리얼 통신 초기화 추가
+  pinMode(TRIG_PIN1, OUTPUT);    // 트리거 핀1 출력 모드 설정
+  pinMode(ECHO_PIN1, INPUT);     // 에코 핀1 입력 모드 설정
+  pinMode(TRIG_PIN2, OUTPUT);    // 트리거 핀1 출력 모드 설정
+  pinMode(ECHO_PIN2, INPUT);     // 에코 핀1 입력 모드 설정
+}
+
+
+void loop() {
+  float distance1 =  measureDistance1();
+  float distance2 =  measureDistance2();
+  Serial.print(distance1);
+  Serial.print(", ");
+  Serial.println(distance2);
+
+if(distance1 <= 150 || distance2 <= 150){
+  digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
+  analogWrite(PWM1, 255);     // 최대 속도
+  digitalWrite(DIR2, HIGH);   // ZK-5AD 모터 2 전진
+  analogWrite(PWM2, 0);     // 최대 속도
+
+  digitalWrite(in1, HIGH);    // L298N 모터 3 전진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, HIGH);    // L298N 모터 4 전진
+  digitalWrite(in4, LOW);
+  analogWrite(enB, 255);      // 최대 속도
+
+  delay(6000);                // 6초 동안 동작
+}
+else if(distance1 <= 50 || distance2 <= 50){
+   digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
+  analogWrite(PWM1, 255);     // 최대 속도
+  digitalWrite(DIR2, HIGH);   // ZK-5AD 모터 2 전진
+  analogWrite(PWM2, 0);     // 최대 속도
+
+  digitalWrite(in1, HIGH);    // L298N 모터 3 전진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, HIGH);    // L298N 모터 4 전진
+  digitalWrite(in4, LOW);
+  analogWrite(enB, 255);      // 최대 속도
+
+  delay(4000);                // 4초 동안 동안
+}
+else if(distance1 <= 15 || distance2 <= 15){
+   digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
+  analogWrite(PWM1, 255);     // 최대 속도
+  digitalWrite(DIR2, HIGH);   // ZK-5AD 모터 2 전진
+  analogWrite(PWM2, 0);     // 최대 속도
+
+  digitalWrite(in1, HIGH);    // L298N 모터 3 전진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, HIGH);    // L298N 모터 4 전진
+  digitalWrite(in4, LOW);
+  analogWrite(enB, 255);      // 최대 속도
+
+  delay(4000000000);                // 4초 동안 동안
+
+}
+else{
+  digitalWrite(DIR1, HIGH);    // ZK-5AD 모터 1 후진
+  analogWrite(PWM1, 0);     // 최대 속도
+  digitalWrite(DIR2, HIGH);    // ZK-5AD 모터 2 후진
+  analogWrite(PWM2, 0);     // 최대 속도
+
+  digitalWrite(in1, HIGH);     // L298N 모터 3 후진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, LOW);     // L298N 모터 4 후진
+  digitalWrite(in4, HIGH);
+  analogWrite(enB, 255);      // 최대 속도
+
+  delay(1000);                // 3초 동안 동작
+
+}
+}
+
