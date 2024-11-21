@@ -1,97 +1,98 @@
-// 모터 제어 핀 정의
-const int D0 = 9; // PWM pin for Motor 1
-const int D1 = 8; // PWM pin for Motor 1
-const int D2 = 6; // PWM pin for Motor 2
-const int D3 = 7; // PWM pin for Motor 2
+// ZK-5AD 모터 드라이버 핀 설정
+const int PWM1 = 9;  // ZK-5AD 모터 1 속도 제어 (PWM 핀)
+const int DIR1 = 8;  // ZK-5AD 모터 1 방향 제어
+const int PWM2 = 6;  // ZK-5AD 모터 2 속도 제어 (PWM 핀)
+const int DIR2 = 7;  // ZK-5AD 모터 2 방향 제어
 
-// 적외선 핀 정의
-const int IRSENSOR_PIN = A0; 
+// L298N 모터 드라이버 핀 설정
+const int enA = 5;   // L298N 모터 3 속도 제어 (PWM 핀)
+const int in1 = 4;   // L298N 모터 3 방향 제어 핀 1
+const int in2 = 3;   // L298N 모터 3 방향 제어 핀 2
+const int enB = 10;  // L298N 모터 4 속도 제어 (PWM 핀)
+const int in3 = 11;  // L298N 모터 4 방향 제어 핀 1
+const int in4 = 12;  // L298N 모터 4 방향 제어 핀 2
 
-// 모터 제어 함수 정의
-void Motor1(bool direction, int speed) {
-    if (direction) { // CW (시계 방향)
-        analogWrite(D0, speed); // 속도 설정
-        analogWrite(D1, 0); // 반대 방향 핀 끄기
-    } else { // CCW (반시계 방향)
-        analogWrite(D0, 0); // 반대 방향 핀 끄기
-        analogWrite(D1, speed); // 속도 설정
-    }
-}
-
-void Motor2(bool direction, int speed) {
-    if (direction) { // CW (시계 방향)
-        analogWrite(D2, speed); // 속도 설정
-        analogWrite(D3, 0); // 반대 방향 핀 끄기
-    } else { // CCW (반시계 방향)
-        analogWrite(D2, 0); // 반대 방향 핀 끄기
-        analogWrite(D3, speed); // 속도 설정
-    }
-}
+// 적외선 센서 설정
+const int IRSENSOR_PIN = A0;
 
 void setup() {
-    Serial.begin(9600);      
+  // 시리얼 모니터 시작
+  Serial.begin(9600);
+  // 적외선 핀 모드 설정
+  pinMode(IRSENSOR_PIN, INPUT);
+  // ZK-5AD 핀 모드 설정
+  pinMode(PWM1, OUTPUT);
+  pinMode(DIR1, OUTPUT);
+  pinMode(PWM2, OUTPUT);
+  pinMode(DIR2, OUTPUT);
 
-    pinMode(D0, OUTPUT);
-    pinMode(D1, OUTPUT);
-    pinMode(D2, OUTPUT);
-    pinMode(D3, OUTPUT);
+  // L298N 핀 모드 설정
+  pinMode(enA, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
 
-    pinMode(IRSENSOR_PIN, INPUT); 
+  // 초기화: 모든 모터를 정지 상태로 설정
+  analogWrite(PWM1, 0);
+  analogWrite(PWM2, 0);
+  analogWrite(enA, 0);
+  analogWrite(enB, 0);
+
+  delay(500); // 초기 안정화를 위한 딜레이
 }
 
-void loop() {  
-    Motor1(true, 100); // 모터 1 전진
-    Motor2(true, 100); // 모터 2 전진
-    delay(1000); // 1초 대기
+void loop() {
+  int sensorValue = analogRead(IRSENSOR_PIN); // 적외선 센서 값 넣음
+  if (sensorValue <= 200) {
+  // 제자리 회전
+  Serial.println("All motors reverse");
+  digitalWrite(DIR1, HIGH);    // ZK-5AD 모터 1 후진
+  analogWrite(PWM1, 0);     // 최대 속도
+  digitalWrite(DIR2, LOW);    // ZK-5AD 모터 2 후진
+  analogWrite(PWM2, 255);     // 최대 속도
 
-    // 모터 정지
-    Motor1(false, 0); // 모터 1 정지
-    Motor2(false, 0); // 모터 2 정지
-    delay(500); // 0.5초 대기
+  digitalWrite(in1, HIGH);     // L298N 모터 3 후진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, LOW);     // L298N 모터 4 후진
+  digitalWrite(in4, HIGH);
+  analogWrite(enB, 255);      // 최대 속도
+  delay(5000);                // 5초 동안 동작
+  
+  digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
+  analogWrite(PWM1, 255);     // 최대 속도
+  digitalWrite(DIR2, HIGH);   // ZK-5AD 모터 2 전진
+  analogWrite(PWM2, 255);     // 최대 속도
+  digitalWrite(in1, HIGH);    // L298N 모터 3 전진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, HIGH);    // L298N 모터 4 전진
+  digitalWrite(in4, LOW);
+  analogWrite(enB, 255);      // 최대 속도
+  delay(1000);
 
-    Motor1(false, 100); // 모터 1 후진
-    Motor2(false, 100); // 모터 2 후진
-    delay(1000); // 1초 대기
+ }
 
-    // 모터 정지
-    Motor1(false, 0); // 모터 1 정지
-    Motor2(false, 0); // 모터 2 정지
-    delay(500); // 0.5초 대기
+  else {
+  // 모든 모터 전진
+  Serial.println("All motors forward");
+  digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
+  analogWrite(PWM1, 255);     // 최대 속도
+  digitalWrite(DIR2, HIGH);   // ZK-5AD 모터 2 전진
+  analogWrite(PWM2, 255);     // 최대 속도
+  
+  digitalWrite(in1, HIGH);    // L298N 모터 3 전진
+  digitalWrite(in2, LOW);
+  analogWrite(enA, 255);      // 최대 속도
+  digitalWrite(in3, HIGH);    // L298N 모터 4 전진
+  digitalWrite(in4, LOW);
+  analogWrite(enB, 255);      // 최대 속도
+  delay(1000);
 
-    int sensorValue = analogRead(IRSENSOR_PIN); 
-    Serial.print("적외선 센서의 측정값: ");
-    Serial.print(sensorValue);
-    
-    if (sensorValue <= 200) {
-        // sensorValue가 200 이하일 때 실행할 코드
-        Serial.println("흰색 선 감지!");
-        M1(false, 100); // 모터 1 후진
-        M2(false, 100); // 모터 2 후진
-
-        // 브레이크 적용
-        brake(1);
-        brake(2);
-        delay(1000); // 1초 대기
-
-        // 120도 반시계 방향 회전
-        rotateCounterClockwise(120);
-        
-        // 회전 후 브레이크 적용
-        brake(1);
-        brake(2);
-        delay(3000); // 3초 대기
-
-        M1(true, 100); // 모터 1 전진
-        M2(true, 100); // 모터 2 전진
-    } else {
-        Serial.println("검은색 바닥 감지!");
-        // sensorValue가 200 초과일 때 전진
-        M1(true, 100); // 모터 1 전진
-        M2(true, 100); // 모터 2 전진
-    }
-}
-
+  }
+  }
 
 
-
-
+ 
