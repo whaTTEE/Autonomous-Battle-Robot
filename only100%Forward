@@ -1,0 +1,27 @@
+#변수 선언
+const int D0 = 9; // PWM pin for Motor 1
+const int D1 = 6; // PWM pin for Motor 1
+const int D2 = 5; // PWM pin for Motor 2
+const int D3 = 3; // PWM pin for Motor 2
+
+bool CW = true;
+bool CCW = false;
+
+bool debug = true;
+
+int speed = 100;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(D0, OUTPUT);
+  pinMode(D1, OUTPUT);
+  pinMode(D2, OUTPUT);
+  pinMode(D3, OUTPUT);
+}
+
+void loop() {
+  
+  M1(CW, speed);
+  M2(CW, speed);
+  
+  }
