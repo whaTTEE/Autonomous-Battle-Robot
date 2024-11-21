@@ -1,4 +1,4 @@
-/*
+/*전진 속도 0~100% -> 후진 100~0% -> 정지 이거 반복 코드
  * Speed Control Test for 2 DC Motors
  * 
  * This code tests speed control by gradually increasing and decreasing the speed of both motors.
