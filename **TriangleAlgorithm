@@ -29,6 +29,7 @@ void loop() {
     
     if (sensorValue <= 200) {
         // sensorValue가 200 이하일 때 실행할 코드
+        Serial.println("흰색 선 감지!");
         M1(CCW, 100); // 모터 1 후진
         M2(CCW, 100); // 모터 2 후진
 
@@ -48,6 +49,7 @@ void loop() {
         M1(CW, 100); // 모터 1 전진
         M2(CW, 100); // 모터 2 전진
     } else {
+        Serial.println("검은색 바닥 감지!");
         // sensorValue가 200 초과일 때 전진
         M1(CW, 100); // 모터 1 전진
         M2(CW, 100); // 모터 2 전진
