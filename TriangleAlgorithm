@@ -1,0 +1,58 @@
+const int IRSENSOR_PIN = A0; 
+
+const int D0 = 9; // PWM pin for Motor 1
+const int D1 = 6; // PWM pin for Motor 1
+const int D2 = 5; // PWM pin for Motor 2
+const int D3 = 3; // PWM pin for Motor 2
+
+bool CW = true;
+bool CCW = false;
+
+bool debug = true; 
+
+
+void setup() {
+  Serial.begin(9600);      
+
+  pinMode(D0, OUTPUT);
+  pinMode(D1, OUTPUT);
+  pinMode(D2, OUTPUT);
+  pinMode(D3, OUTPUT);
+
+  pinMode(IRSENSOR_PIN, INPUT); 
+}
+
+void loop() {  
+    int sensorValue = analogRead(IRSENSOR_PIN); 
+    Serial.print("적외선 센서의 측정값: ");
+    Serial.print(sensorValue);
+    
+    if (sensorValue <= 200) {
+        // sensorValue가 200 이하일 때 실행할 코드
+        M1(CCW, 100); // 모터 1 후진
+        M2(CCW, 100); // 모터 2 후진
+
+        // 브레이크 적용
+        brake(1);
+        brake(2);
+        delay(1000); // 1초 대기
+
+        // 120도 반시계 방향 회전
+        rotateCounterClockwise(120);
+        
+        // 회전 후 브레이크 적용
+        brake(1);
+        brake(2);
+        delay(3000); // 3초 대기
+
+        M1(CW, 100); // 모터 1 전진
+        M2(CW, 100); // 모터 2 전진
+    } else {
+        // sensorValue가 200 초과일 때 전진
+        M1(CW, 100); // 모터 1 전진
+        M2(CW, 100); // 모터 2 전진
+    }
+}
+
+
+
