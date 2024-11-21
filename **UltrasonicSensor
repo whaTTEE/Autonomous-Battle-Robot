@@ -63,20 +63,20 @@ void loop() {
       digitalWrite(MOTOR_PIN1, HIGH);  
       digitalWrite(MOTOR_PIN2, HIGH); 
     }
-  elif (distance
-else {
-      // distance2가 더 크면 motor1을 역회전
-      digitalWrite(MOTOR_PIN1, HIGH); // 모터 1 역회전
-      digitalWrite(MOTOR_PIN2, LOW);  // 모터 2 정방향 정지
-      delay(3000);                     // 3초간 역회전
-      if ( distance 2 - distance 1 <= 15){
-      digitalWrite(MOTOR_PIN1, HIGH);  
-      digitalWrite(MOTOR_PIN2, HIGH); 
-    }
-    // 모터 정지
-    digitalWrite(MOTOR_PIN1, LOW);
-    digitalWrite(MOTOR_PIN2, LOW);
-  }
 
-  delay(100); // 측정 간격 추가
-}
+  else {
+        // distance2가 더 크면 motor1을 역회전
+        digitalWrite(MOTOR_PIN1, HIGH); // 모터 1 역회전
+        digitalWrite(MOTOR_PIN2, LOW);  // 모터 2 정방향 정지
+        delay(3000);                     // 3초간 역회전
+        if ( distance 2 - distance 1 <= 15){
+        digitalWrite(MOTOR_PIN1, HIGH);  
+        digitalWrite(MOTOR_PIN2, HIGH); 
+      }
+      // 모터 정지
+      digitalWrite(MOTOR_PIN1, LOW);
+      digitalWrite(MOTOR_PIN2, LOW);
+    }
+  
+    delay(100); // 측정 간격 추가
+  }
