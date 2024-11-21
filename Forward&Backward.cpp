@@ -1,10 +1,5 @@
 /*전진 속도 0~100% -> 후진 100~0% -> 정지 이거 반복 코드
- * Speed Control Test for 2 DC Motors
- * 
- * This code tests speed control by gradually increasing and decreasing the speed of both motors.
- * 
- */
-
+#변수 선언
 const int D0 = 9; // PWM pin for Motor 1
 const int D1 = 6; // PWM pin for Motor 1
 const int D2 = 5; // PWM pin for Motor 2
@@ -13,11 +8,12 @@ const int D3 = 3; // PWM pin for Motor 2
 bool CW = true;
 bool CCW = false;
 
-bool debug = true; // Enable debug to see speed changes
+bool debug = true;
+
+int speed = 100;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Robojax TA6586 Motor Control - Speed Control Test");
   pinMode(D0, OUTPUT);
   pinMode(D1, OUTPUT);
   pinMode(D2, OUTPUT);
@@ -25,11 +21,10 @@ void setup() {
 }
 
 void loop() {
-  // Gradually increase speed from 0 to 100% in CW direction
-  for (int speed = 0; speed <= 100; speed += 10) {
-    M1(CW, speed);
-    M2(CW, speed);
-    delay(500); // Wait 0.5 seconds at each speed level
+  
+  M1(CW, speed);
+  M2(CW, speed);
+  
   }
 
   // Apply brake to both motors
@@ -50,12 +45,7 @@ void loop() {
   delay(3000); // Wait for 3 seconds
 }
 
-/*
- *  M1(bool direction, int speed)
- * @brief runs motor 1
- * @param direction is CW or CCW
- * @param speed is integer between 0 to 100
- */
+
 void M1(bool direction, int speed) {
   int pwm = map(speed, 0, 100, 0, 255);
   if (direction == CW) {
@@ -102,14 +92,6 @@ void brake(int motor) {
   debugPrint(motor, true, 0, true);
 }
 
-/*
- * debugPrint(int motor, bool direction, int speed, bool stop)
- * @brief prints debugging information
- * @param "motor" is integer 1 or 2
- * @param "direction" is CW or CCW
- * @param "speed" is 0 to 100
- * @param "stop" is true or false, if true, the word "stop" is printed
- */
 void debugPrint(int motor, bool direction, int speed, bool stop) {
   if (debug) {
     Serial.print("Motor: ");
