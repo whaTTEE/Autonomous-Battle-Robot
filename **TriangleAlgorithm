@@ -1,28 +1,63 @@
-const int IRSENSOR_PIN = A0; 
-
+// 모터 제어 핀 정의
 const int D0 = 9; // PWM pin for Motor 1
 const int D1 = 6; // PWM pin for Motor 1
 const int D2 = 5; // PWM pin for Motor 2
 const int D3 = 3; // PWM pin for Motor 2
 
-bool CW = true;
-bool CCW = false;
+// 적외선 핀 정의
+const int IRSENSOR_PIN = A0; 
 
-bool debug = true; 
+// 모터 제어 함수 정의
+void Motor1(bool direction, int speed) {
+    if (direction) { // CW (시계 방향)
+        analogWrite(D0, speed); // 속도 설정
+        analogWrite(D1, 0); // 반대 방향 핀 끄기
+    } else { // CCW (반시계 방향)
+        analogWrite(D0, 0); // 반대 방향 핀 끄기
+        analogWrite(D1, speed); // 속도 설정
+    }
+}
 
+void Motor2(bool direction, int speed) {
+    if (direction) { // CW (시계 방향)
+        analogWrite(D2, speed); // 속도 설정
+        analogWrite(D3, 0); // 반대 방향 핀 끄기
+    } else { // CCW (반시계 방향)
+        analogWrite(D2, 0); // 반대 방향 핀 끄기
+        analogWrite(D3, speed); // 속도 설정
+    }
+}
 
 void setup() {
-  Serial.begin(9600);      
+    Serial.begin(9600);      
 
-  pinMode(D0, OUTPUT);
-  pinMode(D1, OUTPUT);
-  pinMode(D2, OUTPUT);
-  pinMode(D3, OUTPUT);
+    pinMode(D0, OUTPUT);
+    pinMode(D1, OUTPUT);
+    pinMode(D2, OUTPUT);
+    pinMode(D3, OUTPUT);
 
-  pinMode(IRSENSOR_PIN, INPUT); 
+    pinMode(IRSENSOR_PIN, INPUT); 
 }
 
 void loop() {  
+    Motor1(true, 100); // 모터 1 전진
+    Motor2(true, 100); // 모터 2 전진
+    delay(1000); // 1초 대기
+
+    // 모터 정지
+    Motor1(false, 0); // 모터 1 정지
+    Motor2(false, 0); // 모터 2 정지
+    delay(500); // 0.5초 대기
+
+    Motor1(false, 100); // 모터 1 후진
+    Motor2(false, 100); // 모터 2 후진
+    delay(1000); // 1초 대기
+
+    // 모터 정지
+    Motor1(false, 0); // 모터 1 정지
+    Motor2(false, 0); // 모터 2 정지
+    delay(500); // 0.5초 대기
+
     int sensorValue = analogRead(IRSENSOR_PIN); 
     Serial.print("적외선 센서의 측정값: ");
     Serial.print(sensorValue);
@@ -30,8 +65,8 @@ void loop() {
     if (sensorValue <= 200) {
         // sensorValue가 200 이하일 때 실행할 코드
         Serial.println("흰색 선 감지!");
-        M1(CCW, 100); // 모터 1 후진
-        M2(CCW, 100); // 모터 2 후진
+        M1(false, 100); // 모터 1 후진
+        M2(false, 100); // 모터 2 후진
 
         // 브레이크 적용
         brake(1);
@@ -46,15 +81,17 @@ void loop() {
         brake(2);
         delay(3000); // 3초 대기
 
-        M1(CW, 100); // 모터 1 전진
-        M2(CW, 100); // 모터 2 전진
+        M1(true, 100); // 모터 1 전진
+        M2(true, 100); // 모터 2 전진
     } else {
         Serial.println("검은색 바닥 감지!");
         // sensorValue가 200 초과일 때 전진
-        M1(CW, 100); // 모터 1 전진
-        M2(CW, 100); // 모터 2 전진
+        M1(true, 100); // 모터 1 전진
+        M2(true, 100); // 모터 2 전진
     }
 }
+
+
 
 
 
