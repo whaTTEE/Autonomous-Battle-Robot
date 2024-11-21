@@ -1,0 +1,31 @@
+int sensorValue = analogRead(IRSENSOR_PIN); 
+    Serial.print("적외선 센서의 측정값: ");
+    Serial.print(sensorValue);
+    
+    if (sensorValue <= 200) {
+        // sensorValue가 200 이하일 때 실행할 코드
+        Serial.println("흰색 선 감지!");
+        M1(CCW, 100); // 모터 1 후진
+        M2(CCW, 100); // 모터 2 후진
+
+        // 브레이크 적용
+        brake(1);
+        brake(2);
+        delay(1000); // 1초 대기
+
+        // 120도 반시계 방향 회전
+        rotateCounterClockwise(120);
+        
+        // 회전 후 브레이크 적용
+        brake(1);
+        brake(2);
+        delay(3000); // 3초 대기
+
+        M1(CW, 100); // 모터 1 전진
+        M2(CW, 100); // 모터 2 전진
+    } else {
+        Serial.println("검은색 바닥 감지!");
+        // sensorValue가 200 초과일 때 전진
+        M1(CW, 100); // 모터 1 전진
+        M2(CW, 100); // 모터 2 전진
+    }
