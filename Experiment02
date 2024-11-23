@@ -1,6 +1,6 @@
 #include <NewPing.h>
 
-// ÇÉ ¼³Á¤
+// í•€ ì„¤ì •
 #define TRIG_PIN_FRONT 7
 #define ECHO_PIN_FRONT 6
 #define IR_SENSOR_LEFT A0
@@ -8,16 +8,16 @@
 #define MOTOR_SPEED_MAX 255
 #define MOTOR_SPEED_LOW (MOTOR_SPEED_MAX / 3)
 
-// ÃÊÀ½ÆÄ ¼¾¼­ ¼³Á¤
+// ì´ˆìŒíŒŒ ì„¼ì„œ ì„¤ì •
 #define MAX_DISTANCE 200
 NewPing sonarFront(TRIG_PIN_FRONT, ECHO_PIN_FRONT, MAX_DISTANCE);
 
-// ¸ğÅÍ Á¦¾î ÇÔ¼ö
+// ëª¨í„° ì œì–´ í•¨ìˆ˜
 void setMotorSpeed(int speed) {
 analogWrite(enablePinLeft, speed);
 analogWrite(enablePinRight, speed);
 }
 
-// È¸Àü ÇÔ¼ö
+// íšŒì „ í•¨ìˆ˜
 void rotateRight120() {
 setMotorSpeed(MOTOR_SPEED_LOW)
