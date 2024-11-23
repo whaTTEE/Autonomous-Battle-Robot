@@ -74,7 +74,7 @@ if(distance1 <= 180 || distance2 <= 180){
   digitalWrite(in4, LOW);
   analogWrite(enB, 255);      // 최대 속도
 
-  delay(1250);                // 6초 동안 동작
+  delay(1250);                // 1.25초 동안 동작
 }
 else if(distance1 <= 100 || distance2 <= 100){
    digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
@@ -89,7 +89,7 @@ else if(distance1 <= 100 || distance2 <= 100){
   digitalWrite(in4, LOW);
   analogWrite(enB, 255);      // 최대 속도
 
-  delay(1000);                // 4초 동안 동안
+  delay(1000);                // 1초 동안 동안
 }
 else if(distance1 <= 15 || distance2 <= 15){
    digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
@@ -104,7 +104,7 @@ else if(distance1 <= 15 || distance2 <= 15){
   digitalWrite(in4, LOW);
   analogWrite(enB, 255);      // 최대 속도
 
-  delay(4000000000);                // 4초 동안 동안
+  delay(4000000000);                
 
 }
 else{
@@ -119,7 +119,7 @@ else{
   digitalWrite(in4, HIGH);
   analogWrite(enB, 255);      // 최대 속도
 
-  delay(500);                // 3초 동안 동작
+  delay(500);                // 5초 동안 동작
 
 }
 }
