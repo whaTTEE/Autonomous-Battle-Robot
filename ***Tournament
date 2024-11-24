@@ -63,7 +63,7 @@ void loop() {
 
 if(distance1 <= 180 || distance2 <= 180){
   digitalWrite(DIR1, LOW);   // ZK-5AD 모터 1 전진
-  analogWrite(PWM1, 150);     // 최대 속도
+  analogWrite(PWM1, 255);     // 최대 속도
   digitalWrite(DIR2, HIGH);   // ZK-5AD 모터 2 전진
   analogWrite(PWM2, 0);     // 최대 속도
 
